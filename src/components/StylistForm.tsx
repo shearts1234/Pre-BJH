@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { Camera, Ruler, Weight, Sparkles } from 'lucide-react';
+import { Camera, Ruler, Weight, Sparkles, User } from 'lucide-react';
 import './StylistForm.css';
 
 const StylistForm: React.FC = () => {
   const [photo, setPhoto] = useState<string | null>(null);
+  const [gender, setGender] = useState<string>('');
   const [height, setHeight] = useState<string>('');
   const [weight, setWeight] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -25,7 +26,11 @@ const StylistForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ photo, height, weight });
+    if (!gender) {
+      alert('성별을 선택해 주세요!');
+      return;
+    }
+    console.log({ photo, gender, height, weight });
     alert('스타일 분석을 시작합니다!');
   };
 
@@ -58,6 +63,36 @@ const StylistForm: React.FC = () => {
                 accept="image/*" 
                 style={{ display: 'none' }} 
               />
+            </div>
+          </div>
+
+          <div className="input-field" style={{ marginBottom: '8px' }}>
+            <label>
+              <User size={18} />
+              성별
+            </label>
+            <div className="gender-group">
+              <button 
+                type="button" 
+                className={`gender-button ${gender === 'male' ? 'active' : ''}`}
+                onClick={() => setGender('male')}
+              >
+                남성
+              </button>
+              <button 
+                type="button" 
+                className={`gender-button ${gender === 'female' ? 'active' : ''}`}
+                onClick={() => setGender('female')}
+              >
+                여성
+              </button>
+              <button 
+                type="button" 
+                className={`gender-button ${gender === 'other' ? 'active' : ''}`}
+                onClick={() => setGender('other')}
+              >
+                기타
+              </button>
             </div>
           </div>
 
