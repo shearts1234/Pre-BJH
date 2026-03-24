@@ -22,7 +22,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const { photo, gender, height, weight, age, skinTone, preferredStyle } = (await request.json()) as any;
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-5.4-nano',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'developer',
@@ -58,7 +58,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           ],
         },
       ],
-      max_tokens: 1500,
+      max_completion_tokens: 1500,
       temperature: 0.7,
     });
 
