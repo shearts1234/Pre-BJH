@@ -57,16 +57,11 @@ export default {
         "surface-container-high": "#eae7e7"
       },
       fontFamily: {
-        "headline": ["Noto Serif", "serif"],
-        "body": ["Manrope", "sans-serif"],
-        "label": ["Manrope", "sans-serif"]
+        "headline": ["Noto Serif"],
+        "body": ["Manrope"],
+        "label": ["Manrope"]
       },
-      borderRadius: {
-        "DEFAULT": "0.25rem",
-        "lg": "0.5rem",
-        "xl": "0.75rem",
-        "full": "9999px"
-      },
+      borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
     },
   },
   plugins: [],

@@ -1,6 +1,58 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-on-tertiary-fixed: #221b08;
+  --color-secondary-fixed: #ffdea5;
+  --color-error-container: #ffdad6;
+  --color-surface-container-lowest: #ffffff;
+  --color-on-secondary: #ffffff;
+  --color-background: #fcf9f8;
+  --color-on-secondary-fixed-variant: #5d4201;
+  --color-on-tertiary: #ffffff;
+  --color-secondary: #775a19;
+  --color-secondary-fixed-dim: #e9c176;
+  --color-on-secondary-fixed: #261900;
+  --color-surface-container-highest: #e5e2e1;
+  --color-on-secondary-container: #785a1a;
+  --color-primary-fixed-dim: #c8c6c5;
+  --color-outline: #747878;
+  --color-inverse-on-surface: #f3f0ef;
+  --color-surface-variant: #e5e2e1;
+  --color-on-tertiary-fixed-variant: #504630;
+  --color-on-error-container: #93000a;
+  --color-secondary-container: #fed488;
+  --color-tertiary: #000000;
+  --color-tertiary-container: #221b08;
+  --color-primary-fixed: #e4e2e1;
+  --color-surface: #fcf9f8;
+  --color-on-primary-fixed: #1b1c1c;
+  --color-on-surface: #1c1b1b;
+  --color-surface-bright: #fcf9f8;
+  --color-on-tertiary-container: #8f8269;
+  --color-surface-container: #f0eded;
+  --color-primary-container: #1b1c1c;
+  --color-on-primary-fixed-variant: #474746;
+  --color-on-primary: #ffffff;
+  --color-surface-tint: #5f5e5e;
+  --color-error: #ba1a1a;
+  --color-inverse-primary: #c8c6c5;
+  --color-surface-container-low: #f6f3f2;
+  --color-surface-dim: #dcd9d9;
+  --color-on-error: #ffffff;
+  --color-on-surface-variant: #444748;
+  --color-on-primary-container: #858383;
+  --color-inverse-surface: #313030;
+  --color-tertiary-fixed-dim: #d4c5a8;
+  --color-tertiary-fixed: #f1e1c3;
+  --color-primary: #000000;
+  --color-outline-variant: #c4c7c7;
+  --color-on-background: #1c1b1b;
+  --color-surface-container-high: #eae7e7;
+
+  --font-headline: "Noto Serif", serif;
+  --font-body: "Manrope", sans-serif;
+  --font-label: "Manrope", sans-serif;
+}
 
 @layer base {
   body {
@@ -12,6 +64,13 @@
 @layer components {
   .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
   }
   .editorial-shadow {
     box-shadow: 0 20px 40px -5px rgba(28, 27, 27, 0.05);

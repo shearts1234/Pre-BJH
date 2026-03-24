@@ -12,6 +12,7 @@
     "pages:dev": "wrangler pages dev ./dist"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.2.2",
     "lucide-react": "^0.577.0",
     "openai": "^6.32.0",
     "react": "^19.2.4",
