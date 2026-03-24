@@ -14,6 +14,7 @@ const StylistForm: React.FC = () => {
   
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<string | null>(null);
+  const [hairImage, setHairImage] = useState<string | null>(null);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -68,6 +69,7 @@ const StylistForm: React.FC = () => {
 
     setLoading(true);
     setResult(null);
+    setHairImage(null);
 
     try {
       const response = await fetch('/api/consult', {
@@ -81,6 +83,9 @@ const StylistForm: React.FC = () => {
       const data = await response.json();
       if (data.error) throw new Error(data.error);
       setResult(data.result);
+      if (data.hairImage) {
+        setHairImage(data.hairImage);
+      }
     } catch (error: any) {
       alert('오류가 발생했습니다: ' + error.message);
     } finally {
@@ -174,10 +179,30 @@ const StylistForm: React.FC = () => {
         ) : (
           <div className="result-container">
             <h2>스타일 컨설팅 보고서</h2>
+            
+            {hairImage && (
+              <div className="hair-image-section" style={{ marginBottom: '30px', textAlign: 'center' }}>
+                <h3 style={{ marginBottom: '15px', color: '#6366f1' }}>추천 헤어스타일 (3x3)</h3>
+                <img 
+                  src={hairImage} 
+                  alt="Recommended Hairstyles" 
+                  style={{ 
+                    width: '100%', 
+                    borderRadius: '16px', 
+                    boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
+                    border: '4px solid white'
+                  }} 
+                />
+                <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '10px' }}>
+                  * AI가 분석한 당신에게 가장 잘 어울리는 9가지 헤어스타일입니다.
+                </p>
+              </div>
+            )}
+
             <div className="result-content" style={{ whiteSpace: 'pre-wrap', textAlign: 'left', marginTop: '20px' }}>
               {result}
             </div>
-            <button onClick={() => setResult(null)} className="submit-button" style={{ marginTop: '20px' }}>
+            <button onClick={() => { setResult(null); setHairImage(null); }} className="submit-button" style={{ marginTop: '20px' }}>
               다시 하기
             </button>
           </div>

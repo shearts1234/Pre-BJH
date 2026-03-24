@@ -64,7 +64,41 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     const result = response.choices[0].message.content;
 
-    return new Response(JSON.stringify({ result }), {
+    // --- 헤어스타일 이미지 생성 로직 추가 ---
+    let hairImage = null;
+    try {
+      if (photo && photo.startsWith('data:image')) {
+        // Base64 이미지를 Blob/File 객체로 변환 (OpenAI SDK 전송용)
+        const base64Data = photo.split(',')[1];
+        const binaryString = atob(base64Data);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: 'image/png' });
+        const file = new File([blob], 'image.png', { type: 'image/png' });
+
+        const imageResponse = await openai.images.edit({
+          image: file,
+          prompt: "너는 최고의 헤어스타일리스트야. 3x3그리도로 어떤 헤어스타일인지 설명과 함께 첨부한 사진 속 사람이랑 최고로 잘 어울리는 헤어스타일 9개 생성해줘. 단 첨부한 사람의 얼굴은 절대 바꾸지말고 기존 얼굴 그대로 유지하고 헤어스타일만 바꿔",
+          model: "gpt-image-1.5" as any,
+          n: 1,
+          size: "1024x1024",
+          // 사용자 제공 코드의 추가 파라미터 적용
+          quality: "auto",
+          background: "auto",
+          moderation: "auto",
+          input_fidelity: "high"
+        } as any);
+
+        hairImage = imageResponse.data[0].url || (imageResponse.data[0].b64_json ? `data:image/png;base64,${imageResponse.data[0].b64_json}` : null);
+      }
+    } catch (imgError: any) {
+      console.error('Image generation error:', imgError);
+      // 이미지 생성 실패 시에도 텍스트 결과는 보여주기 위해 에러를 무시하거나 메시지만 기록
+    }
+
+    return new Response(JSON.stringify({ result, hairImage }), {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error: any) {
