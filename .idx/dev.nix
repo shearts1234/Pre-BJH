@@ -29,7 +29,7 @@
       enable = true;
       previews = {
         web = {
-          command = ["npm" "run" "dev" "--" "--port" "$PORT" "--host" "0.0.0.0"];
+          command = ["npx" "wrangler" "pages" "dev" "." "--compatibility-date" "2024-03-23" "--port" "$PORT" "--host" "0.0.0.0" "--" "npm" "run" "dev" "--" "--port" "5173" "--host" "0.0.0.0"];
           manager = "web";
         };
       };

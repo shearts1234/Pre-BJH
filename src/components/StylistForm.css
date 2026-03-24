@@ -61,9 +61,10 @@
   transition: border-color 0.3s, background-color 0.3s;
 }
 
-.photo-upload-area:hover {
+.photo-upload-area.dragging {
   border-color: var(--accent);
   background-color: var(--accent-bg);
+  transform: scale(1.02);
 }
 
 .photo-preview {
