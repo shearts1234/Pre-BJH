@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Camera, Ruler, Weight, Sparkles, User } from 'lucide-react';
-import './StylistForm.css';
+import { Camera, Ruler, Weight, Sparkles, User, ArrowLeft } from 'lucide-react';
 
 const StylistForm: React.FC = () => {
   const [photo, setPhoto] = useState<string | null>(null);
@@ -94,120 +93,191 @@ const StylistForm: React.FC = () => {
   };
 
   return (
-    <div className="stylist-form-container">
-      <div className="stylist-card">
-        <header className="form-header">
-          <h1>AI Personal Stylist</h1>
-          <p>당신에게 가장 잘 어울리는 스타일을 찾아드릴게요.</p>
-        </header>
-
-        {!result ? (
-          <form onSubmit={handleSubmit} className="stylist-form">
-            <div className="photo-upload-section">
-              <div 
-                className={`photo-upload-area ${isDragging ? 'dragging' : ''}`}
-                onClick={handlePhotoClick}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
-              >
-                {photo ? (
-                  <img src={photo} alt="Preview" className="photo-preview" />
-                ) : (
-                  <div className="upload-placeholder">
-                    <Camera size={48} strokeWidth={1.5} />
-                    <span>사진을 클릭하거나 드래그하여 업로드하세요</span>
-                  </div>
-                )}
-                <input 
-                  type="file" 
-                  ref={fileInputRef} 
-                  onChange={handleFileChange} 
-                  accept="image/*" 
-                  style={{ display: 'none' }} 
-                />
-              </div>
+    <div className="w-full max-w-4xl mx-auto">
+      {!result ? (
+        <form onSubmit={handleSubmit} className="space-y-12">
+          {/* Photo Upload Section */}
+          <div className="flex flex-col items-center">
+            <div 
+              className={`relative w-full aspect-video max-w-lg rounded-2xl border-2 border-dashed transition-all duration-300 overflow-hidden flex flex-col items-center justify-center cursor-pointer
+                ${isDragging ? 'border-secondary bg-secondary/5 scale-[1.02]' : 'border-outline-variant hover:border-secondary hover:bg-surface-container-low'}`}
+              onClick={handlePhotoClick}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+            >
+              {photo ? (
+                <img src={photo} alt="Preview" className="w-full h-full object-cover" />
+              ) : (
+                <div className="text-center p-8">
+                  <Camera className="w-12 h-12 text-secondary mx-auto mb-4" strokeWidth={1.5} />
+                  <p className="text-on-surface-variant font-medium">Click or drag your photo here</p>
+                  <p className="text-xs text-outline mt-2">Professional portrait recommended for best results</p>
+                </div>
+              )}
+              <input 
+                type="file" 
+                ref={fileInputRef} 
+                onChange={handleFileChange} 
+                accept="image/*" 
+                className="hidden" 
+              />
             </div>
+          </div>
 
-            <div className="input-field">
-              <label><User size={18} /> 성별</label>
-              <div className="gender-group">
+          <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
+            {/* Gender Selection */}
+            <div className="space-y-4">
+              <label className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-secondary">
+                <User size={16} /> Gender Identity
+              </label>
+              <div className="grid grid-cols-3 gap-3">
                 {['male', 'female', 'other'].map((g) => (
                   <button 
                     key={g}
                     type="button" 
-                    className={`gender-button ${gender === g ? 'active' : ''}`}
+                    className={`py-3 px-4 rounded-lg border font-bold text-sm transition-all duration-200
+                      ${gender === g 
+                        ? 'bg-primary text-on-primary border-primary shadow-lg' 
+                        : 'border-outline-variant text-on-surface-variant hover:border-secondary hover:text-secondary'}`}
                     onClick={() => setGender(g)}
                   >
-                    {g === 'male' ? '남성' : g === 'female' ? '여성' : '기타'}
+                    {g.toUpperCase()}
                   </button>
                 ))}
               </div>
             </div>
 
-            <div className="input-group">
-              <div className="input-field">
-                <label><Ruler size={18} /> 키 (cm)</label>
-                <input type="number" placeholder="170" value={height} onChange={(e) => setHeight(e.target.value)} required />
-              </div>
-              <div className="input-field">
-                <label><Weight size={18} /> 몸무게 (kg)</label>
-                <input type="number" placeholder="65" value={weight} onChange={(e) => setWeight(e.target.value)} required />
-              </div>
-            </div>
-
-            <div className="input-group">
-              <div className="input-field">
-                <label>나이</label>
-                <input type="number" placeholder="29" value={age} onChange={(e) => setAge(e.target.value)} required />
-              </div>
-              <div className="input-field">
-                <label>피부 톤</label>
-                <input type="text" placeholder="웜톤, 쿨톤 등" value={skinTone} onChange={(e) => setSkinTone(e.target.value)} required />
-              </div>
-            </div>
-
-            <div className="input-field">
-              <label>선호하는 스타일</label>
-              <input type="text" placeholder="심플&모던, 스트릿, 빈티지 등" value={preferredStyle} onChange={(e) => setPreferredStyle(e.target.value)} required />
-            </div>
-
-            <button type="submit" className="submit-button" disabled={loading}>
-              {loading ? '분석 중...' : <><Sparkles size={20} /> 스타일 분석 시작하기</>}
-            </button>
-          </form>
-        ) : (
-          <div className="result-container">
-            <h2>스타일 컨설팅 보고서</h2>
-            
-            {hairImage && (
-              <div className="hair-image-section" style={{ marginBottom: '30px', textAlign: 'center' }}>
-                <h3 style={{ marginBottom: '15px', color: '#6366f1' }}>추천 헤어스타일 (3x3)</h3>
-                <img 
-                  src={hairImage} 
-                  alt="Recommended Hairstyles" 
-                  style={{ 
-                    width: '100%', 
-                    borderRadius: '16px', 
-                    boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
-                    border: '4px solid white'
-                  }} 
+            {/* Basic Info Group */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-4">
+                <label className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-secondary">
+                  <Ruler size={16} /> Height (cm)
+                </label>
+                <input 
+                  type="number" 
+                  placeholder="175" 
+                  value={height} 
+                  onChange={(e) => setHeight(e.target.value)} 
+                  required 
+                  className="w-full bg-surface-container p-4 rounded-lg border-none focus:ring-2 focus:ring-secondary/50 font-body"
                 />
-                <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '10px' }}>
-                  * AI가 분석한 당신에게 가장 잘 어울리는 9가지 헤어스타일입니다.
-                </p>
+              </div>
+              <div className="space-y-4">
+                <label className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-secondary">
+                  <Weight size={16} /> Weight (kg)
+                </label>
+                <input 
+                  type="number" 
+                  placeholder="68" 
+                  value={weight} 
+                  onChange={(e) => setWeight(e.target.value)} 
+                  required 
+                  className="w-full bg-surface-container p-4 rounded-lg border-none focus:ring-2 focus:ring-secondary/50 font-body"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <label className="text-sm font-bold uppercase tracking-widest text-secondary">Age</label>
+              <input 
+                type="number" 
+                placeholder="28" 
+                value={age} 
+                onChange={(e) => setAge(e.target.value)} 
+                required 
+                className="w-full bg-surface-container p-4 rounded-lg border-none focus:ring-2 focus:ring-secondary/50 font-body"
+              />
+            </div>
+
+            <div className="space-y-4">
+              <label className="text-sm font-bold uppercase tracking-widest text-secondary">Skin Complexion</label>
+              <input 
+                type="text" 
+                placeholder="Warm ivory, Cool sand, etc." 
+                value={skinTone} 
+                onChange={(e) => setSkinTone(e.target.value)} 
+                required 
+                className="w-full bg-surface-container p-4 rounded-lg border-none focus:ring-2 focus:ring-secondary/50 font-body"
+              />
+            </div>
+
+            <div className="md:col-span-2 space-y-4">
+              <label className="text-sm font-bold uppercase tracking-widest text-secondary">Preferred Aesthetic</label>
+              <input 
+                type="text" 
+                placeholder="Minimalist, Streetwear, Avant-garde, etc." 
+                value={preferredStyle} 
+                onChange={(e) => setPreferredStyle(e.target.value)} 
+                required 
+                className="w-full bg-surface-container p-4 rounded-lg border-none focus:ring-2 focus:ring-secondary/50 font-body"
+              />
+            </div>
+          </div>
+
+          <button 
+            type="submit" 
+            disabled={loading}
+            className="w-full bg-primary text-on-primary py-6 rounded-xl font-black text-xl hover:opacity-90 transition-all flex items-center justify-center gap-3 shadow-2xl disabled:opacity-50"
+          >
+            {loading ? (
+              <span className="animate-pulse">Curating Your Style...</span>
+            ) : (
+              <>
+                <Sparkles size={24} /> Generate Digital Lookbook
+              </>
+            )}
+          </button>
+        </form>
+      ) : (
+        <div className="space-y-16 animate-in fade-in slide-in-from-bottom-8 duration-700">
+          <header className="flex justify-between items-end border-b border-outline-variant/30 pb-8">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-[0.3em] text-secondary mb-2 block">Diagnosis Result</span>
+              <h2 className="font-headline text-4xl md:text-6xl font-black italic tracking-tighter">Your Digital <br/>Lookbook</h2>
+            </div>
+            <button 
+              onClick={() => { setResult(null); setHairImage(null); }} 
+              className="flex items-center gap-2 text-sm font-bold hover:text-secondary transition-colors pb-1"
+            >
+              <ArrowLeft size={16} /> Start Over
+            </button>
+          </header>
+          
+          <div className="grid md:grid-cols-12 gap-12">
+            {hairImage && (
+              <div className="md:col-span-5">
+                <div className="sticky top-32 space-y-6">
+                  <div className="bg-white p-2 rounded-2xl editorial-shadow">
+                    <img 
+                      src={hairImage} 
+                      alt="Recommended Hairstyles" 
+                      className="w-full rounded-xl"
+                    />
+                  </div>
+                  <div className="bg-secondary-container p-6 rounded-xl">
+                    <h4 className="font-headline font-bold text-xl mb-2 italic">Hair Curation</h4>
+                    <p className="text-sm text-on-secondary-container leading-relaxed">
+                      AI-generated 3x3 grid exploring volume, texture, and silhouette variations while maintaining facial integrity.
+                    </p>
+                  </div>
+                </div>
               </div>
             )}
 
-            <div className="result-content" style={{ whiteSpace: 'pre-wrap', textAlign: 'left', marginTop: '20px' }}>
-              {result}
+            <div className={`${hairImage ? 'md:col-span-7' : 'md:col-span-12'} space-y-12`}>
+              <div className="prose prose-neutral max-w-none">
+                <div 
+                  className="font-body text-on-surface-variant leading-[1.8] text-lg space-y-8"
+                  style={{ whiteSpace: 'pre-wrap' }}
+                >
+                  {result}
+                </div>
+              </div>
             </div>
-            <button onClick={() => { setResult(null); setHairImage(null); }} className="submit-button" style={{ marginTop: '20px' }}>
-              다시 하기
-            </button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
