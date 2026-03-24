@@ -59,8 +59,9 @@ const StylistForm: React.FC = () => {
       if (data.error) throw new Error(data.error);
       setResult(data.result);
       if (data.hairImage) setHairImage(data.hairImage);
-    } catch (error: any) {
-      alert('오류가 발생했습니다: ' + error.message);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      alert('오류가 발생했습니다: ' + message);
     } finally {
       setLoading(false);
     }
@@ -74,22 +75,51 @@ const StylistForm: React.FC = () => {
     }
   };
 
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'My Style Report',
+          text: 'Check out my AI-generated style analysis!',
+          url: window.location.href,
+        });
+      } catch (err) {
+        console.error('Error sharing:', err);
+      }
+    } else {
+      alert('공유 기능을 지원하지 않는 브라우저입니다. URL을 복사해 주세요.');
+    }
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  const handleComingSoon = () => {
+    alert('이 기능은 현재 준비 중입니다. 곧 멋진 모습으로 찾아올게요!');
+  };
+
+  const openShop = (query: string) => {
+    const encodedQuery = encodeURIComponent(query);
+    window.open(`https://search.musinsa.com/search/musinsa/integration?q=${encodedQuery}`, '_blank');
+  };
+
   if (result) {
     return (
       <div className="w-full max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-1000 text-left">
         {/* Hero Section: Editorial Header */}
-        <section className="mb-16 md:mb-24">
+        <section className="mb-16 md:mb-24 no-print">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
             <div className="max-w-2xl">
               <span className="font-label text-secondary uppercase tracking-[0.3em] text-xs font-bold block mb-4">Curated Analysis</span>
               <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tighter text-primary leading-tight">Your Personal Style Report</h1>
             </div>
             <div className="flex gap-4 mb-2">
-              <button className="flex items-center gap-2 px-6 py-3 bg-surface-container-low text-on-surface rounded-xl hover:bg-surface-container-high transition-all">
+              <button onClick={handleShare} className="flex items-center gap-2 px-6 py-3 bg-surface-container-low text-on-surface rounded-xl hover:bg-surface-container-high transition-all">
                 <Share2 size={18} />
                 <span className="font-label font-bold text-xs uppercase tracking-wider">Share Report</span>
               </button>
-              <button className="flex items-center gap-2 px-6 py-3 bg-primary text-on-primary rounded-xl hover:opacity-90 transition-all">
+              <button onClick={handlePrint} className="flex items-center gap-2 px-6 py-3 bg-primary text-on-primary rounded-xl hover:opacity-90 transition-all">
                 <Download size={18} />
                 <span className="font-label font-bold text-xs uppercase tracking-wider">PDF</span>
               </button>
@@ -148,7 +178,7 @@ const StylistForm: React.FC = () => {
         </section>
 
         {/* Horizontal Scroll: Recommended Outfits */}
-        <section className="mb-20">
+        <section className="mb-20 no-print">
           <div className="flex items-center justify-between mb-8">
             <h2 className="font-headline text-3xl font-bold tracking-tight">Recommended Looks</h2>
             <div className="flex gap-2">
@@ -177,7 +207,7 @@ const StylistForm: React.FC = () => {
                     <span className="font-body font-bold text-secondary">{look.price}</span>
                   </div>
                   <p className="text-on-surface-variant text-sm mb-6 leading-relaxed">Perfectly balanced signature look for your curated visual identity.</p>
-                  <button className="w-full py-4 bg-primary text-on-primary rounded-xl font-label font-bold text-xs uppercase tracking-[0.2em] hover:opacity-90 transition-all flex items-center justify-center gap-2">
+                  <button onClick={() => openShop(look.title)} className="w-full py-4 bg-primary text-on-primary rounded-xl font-label font-bold text-xs uppercase tracking-[0.2em] hover:opacity-90 transition-all flex items-center justify-center gap-2">
                     Shop this Look <ArrowRight size={14} />
                   </button>
                 </div>
@@ -187,13 +217,13 @@ const StylistForm: React.FC = () => {
         </section>
 
         {/* Final CTA */}
-        <section className="bg-secondary-container/30 rounded-[3rem] p-12 text-center relative overflow-hidden mb-20">
+        <section className="bg-secondary-container/30 rounded-[3rem] p-12 text-center relative overflow-hidden mb-20 no-print">
           <div className="relative z-10">
             <h2 className="font-headline text-4xl font-bold mb-6">Refine Your Wardrobe</h2>
             <p className="text-on-surface-variant max-w-lg mx-auto mb-10 text-lg">Our AI continues to learn from your choices. Share this report with your personal stylist or start building your lookbook.</p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <button onClick={() => { setResult(null); setStep(1); }} className="px-10 py-5 bg-primary text-on-primary rounded-full font-label font-bold text-sm uppercase tracking-widest hover:scale-105 transition-transform">Start New Analysis</button>
-              <button className="px-10 py-5 border-2 border-primary text-primary rounded-full font-label font-bold text-sm uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all">Save to Lookbook</button>
+              <button onClick={handleComingSoon} className="px-10 py-5 border-2 border-primary text-primary rounded-full font-label font-bold text-sm uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all">Save to Lookbook</button>
             </div>
           </div>
           <div className="absolute top-0 left-0 w-32 h-32 bg-secondary/10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>

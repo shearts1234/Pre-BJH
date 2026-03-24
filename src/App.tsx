@@ -12,25 +12,35 @@ function App() {
     }, 100);
   };
 
+  const scrollToFeatures = () => {
+    const featuresSection = document.getElementById('features');
+    featuresSection?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleComingSoon = (e: React.MouseEvent) => {
+    e.preventDefault();
+    alert('이 기능은 현재 준비 중입니다. 곧 멋진 모습으로 찾아올게요!');
+  };
+
   return (
     <div className="bg-surface font-body text-on-surface selection:bg-secondary-container selection:text-on-secondary-container">
       {/* TopAppBar */}
       <header className="fixed top-0 w-full z-50 bg-[#fcf9f8]/80 dark:bg-[#1A1A1A]/80 backdrop-blur-xl">
         <div className="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
           <div className="flex items-center gap-4">
-            <span className="material-symbols-outlined text-[#1A1A1A] dark:text-[#fcf9f8] cursor-pointer">menu</span>
-            <h1 className="font-headline font-black text-2xl italic tracking-tighter text-[#1A1A1A] dark:text-[#fcf9f8]">Style AI</h1>
+            <span className="material-symbols-outlined text-[#1A1A1A] dark:text-[#fcf9f8] cursor-pointer" onClick={handleComingSoon}>menu</span>
+            <h1 className="font-headline font-black text-2xl italic tracking-tighter text-[#1A1A1A] dark:text-[#fcf9f8] cursor-pointer" onClick={() => window.location.reload()}>Style AI</h1>
           </div>
           <nav className="hidden md:flex items-center space-x-8">
-            <a className="text-[#1A1A1A] dark:text-[#fcf9f8] font-bold hover:text-[#775a19] transition-colors duration-300" href="#">Home</a>
-            <a className="text-[#1A1A1A]/60 dark:text-[#fcf9f8]/60 hover:text-[#775a19] transition-colors duration-300" href="#">Outfits</a>
-            <a className="text-[#1A1A1A]/60 dark:text-[#fcf9f8]/60 hover:text-[#775a19] transition-colors duration-300" href="#">Upload</a>
-            <a className="text-[#1A1A1A]/60 dark:text-[#fcf9f8]/60 hover:text-[#775a19] transition-colors duration-300" href="#">Profile</a>
+            <a className="text-[#1A1A1A] dark:text-[#fcf9f8] font-bold hover:text-[#775a19] transition-colors duration-300" href="/">Home</a>
+            <a className="text-[#1A1A1A]/60 dark:text-[#fcf9f8]/60 hover:text-[#775a19] transition-colors duration-300" href="#" onClick={handleComingSoon}>Outfits</a>
+            <a className="text-[#1A1A1A]/60 dark:text-[#fcf9f8]/60 hover:text-[#775a19] transition-colors duration-300" href="#" onClick={handleComingSoon}>Upload</a>
+            <a className="text-[#1A1A1A]/60 dark:text-[#fcf9f8]/60 hover:text-[#775a19] transition-colors duration-300" href="#" onClick={handleComingSoon}>Profile</a>
           </nav>
-          <div className="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/20">
+          <div className="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/20 cursor-pointer" onClick={handleComingSoon}>
             <img 
               alt="User profile avatar" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDv5ciHoaea3cXMj6bp0_jFUZ0loxVi6rnAImHK0ihQTKzi0EZa2stY-VheiTnHrHt0nqoVcxs23csgHJ40G7uXyJIlx2LT_SaTMU-j9Q_UqEEFfxqhpVhyQIhpbBiYspHixZpzgwIUwcJlqhgMTQLj0GQqzI-WnQwFKswJ4Xn_JWGqtKbGafzIP12m8wHfy7CLIk6V5a0DVWwHtqoSH5wS9uLZ9HbWpoY-VzDPBVHmEr3dp5wrljF2P98o0ORLTX8EXV5dkfqVqYo"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDv5ciHoaea3cXMj6bp0_jFUZ0loxVi6rnAImHK0ihQTKzi0EZa2stY-VheiTnHrHt0nqoVcxs23csgHJ40G7uXyJIlx2LT_SaTMU-j9Q_UqEEFfxqhpVhyQIhpbBiYspHixZpzgwIUwcJlqhgMTQLj0GQqzI-WnQwFKswJ4Xn_JWGqtKbGafzIP12m8wHfy7CLIk6V5a0DVWwHtqoSH5wS9uLZ9HbWpoY-VzDPBVHmEr3dp5wrljF2P98o0ORLTX8EXV5dkfxqfVqYo"
             />
           </div>
         </div>
@@ -55,7 +65,10 @@ function App() {
                 Start Style Diagnosis
                 <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
               </button>
-              <button className="border-b-2 border-secondary text-on-surface px-8 py-5 font-bold hover:text-secondary transition-colors flex items-center justify-center">
+              <button 
+                onClick={scrollToFeatures}
+                className="border-b-2 border-secondary text-on-surface px-8 py-5 font-bold hover:text-secondary transition-colors flex items-center justify-center"
+              >
                 Explore Looks
               </button>
             </div>
@@ -98,7 +111,7 @@ function App() {
         )}
 
         {/* Features Section: Bento-ish Grid */}
-        <section className="max-w-7xl mx-auto px-6 mt-32 md:mt-48">
+        <section id="features" className="max-w-7xl mx-auto px-6 mt-32 md:mt-48">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
             <div className="max-w-xl">
               <h3 className="font-headline text-3xl md:text-5xl font-bold tracking-tight mb-4 text-primary">Precision Curation</h3>
@@ -109,7 +122,7 @@ function App() {
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {/* Feature 1 */}
-            <div className="bg-surface-container-low p-8 rounded-xl flex flex-col justify-between min-h-[320px] group hover:bg-surface-container-high transition-colors">
+            <div className="bg-surface-container-low p-8 rounded-xl flex flex-col justify-between min-h-[320px] group hover:bg-surface-container-high transition-colors cursor-pointer" onClick={handleComingSoon}>
               <div>
                 <span className="material-symbols-outlined text-secondary text-4xl mb-6">accessibility_new</span>
                 <h4 className="font-headline text-2xl font-bold mb-4">Body Type Analysis</h4>
@@ -121,7 +134,7 @@ function App() {
               </div>
             </div>
             {/* Feature 2 */}
-            <div className="bg-primary p-8 rounded-xl flex flex-col justify-between min-h-[320px] text-on-primary group shadow-2xl relative overflow-hidden">
+            <div className="bg-primary p-8 rounded-xl flex flex-col justify-between min-h-[320px] text-on-primary group shadow-2xl relative overflow-hidden cursor-pointer" onClick={handleComingSoon}>
               <div className="z-10">
                 <span className="material-symbols-outlined text-secondary-fixed text-4xl mb-6">palette</span>
                 <h4 className="font-headline text-2xl font-bold mb-4 text-white">Skin Tone Matching</h4>
@@ -133,7 +146,7 @@ function App() {
               </div>
             </div>
             {/* Feature 3 */}
-            <div className="bg-surface-container-low p-8 rounded-xl flex flex-col justify-between min-h-[320px] group hover:bg-surface-container-high transition-colors duration-300">
+            <div className="bg-surface-container-low p-8 rounded-xl flex flex-col justify-between min-h-[320px] group hover:bg-surface-container-high transition-colors duration-300 cursor-pointer" onClick={handleComingSoon}>
               <div>
                 <span className="material-symbols-outlined text-secondary text-4xl mb-6">checkroom</span>
                 <h4 className="font-headline text-2xl font-bold mb-4">Outfit Recommendations</h4>
@@ -190,19 +203,19 @@ function App() {
 
       {/* BottomNavBar (Mobile Only) */}
       <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 bg-[#ffffff]/80 dark:bg-[#1A1A1A]/80 backdrop-blur-xl border-t border-[#c4c7c7]/15 shadow-[0_-10px_40px_-5px_rgba(28,27,27,0.05)] z-50 rounded-t-xl">
-        <a className="flex flex-col items-center justify-center text-[#1A1A1A] dark:text-[#fcf9f8] border-t-2 border-[#775a19] pt-2 active:scale-95 duration-200" href="#">
+        <a className="flex flex-col items-center justify-center text-[#1A1A1A] dark:text-[#fcf9f8] border-t-2 border-[#775a19] pt-2 active:scale-95 duration-200" href="/">
           <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
           <span className="font-manrope text-[10px] uppercase tracking-widest mt-1 font-bold">Home</span>
         </a>
-        <a className="flex flex-col items-center justify-center text-[#1A1A1A]/40 dark:text-[#fcf9f8]/40 pt-2 active:scale-95 duration-200" href="#">
+        <a className="flex flex-col items-center justify-center text-[#1A1A1A]/40 dark:text-[#fcf9f8]/40 pt-2 active:scale-95 duration-200" href="#" onClick={handleComingSoon}>
           <span className="material-symbols-outlined">person</span>
           <span className="font-manrope text-[10px] uppercase tracking-widest mt-1 font-bold">Profile</span>
         </a>
-        <a className="flex flex-col items-center justify-center text-[#1A1A1A]/40 dark:text-[#fcf9f8]/40 pt-2 active:scale-95 duration-200" href="#">
+        <a className="flex flex-col items-center justify-center text-[#1A1A1A]/40 dark:text-[#fcf9f8]/40 pt-2 active:scale-95 duration-200" href="#" onClick={handleComingSoon}>
           <span className="material-symbols-outlined">cloud_upload</span>
           <span className="font-manrope text-[10px] uppercase tracking-widest mt-1 font-bold">Upload</span>
         </a>
-        <a className="flex flex-col items-center justify-center text-[#1A1A1A]/40 dark:text-[#fcf9f8]/40 pt-2 active:scale-95 duration-200" href="#">
+        <a className="flex flex-col items-center justify-center text-[#1A1A1A]/40 dark:text-[#fcf9f8]/40 pt-2 active:scale-95 duration-200" href="#" onClick={handleComingSoon}>
           <span className="material-symbols-outlined">checkroom</span>
           <span className="font-manrope text-[10px] uppercase tracking-widest mt-1 font-bold">Outfits</span>
         </a>
@@ -217,10 +230,10 @@ function App() {
               Redefining personal fashion through the lens of artificial intelligence and high-end editorial expertise.
             </p>
             <div className="flex gap-4">
-              <div className="w-10 h-10 rounded-full bg-outline-variant/20 flex items-center justify-center hover:bg-secondary/20 transition-colors cursor-pointer">
+              <div className="w-10 h-10 rounded-full bg-outline-variant/20 flex items-center justify-center hover:bg-secondary/20 transition-colors cursor-pointer" onClick={handleComingSoon}>
                 <span className="material-symbols-outlined text-sm">share</span>
               </div>
-              <div className="w-10 h-10 rounded-full bg-outline-variant/20 flex items-center justify-center hover:bg-secondary/20 transition-colors cursor-pointer">
+              <div className="w-10 h-10 rounded-full bg-outline-variant/20 flex items-center justify-center hover:bg-secondary/20 transition-colors cursor-pointer" onClick={handleComingSoon}>
                 <span className="material-symbols-outlined text-sm">alternate_email</span>
               </div>
             </div>
@@ -228,19 +241,19 @@ function App() {
           <div>
             <h6 className="font-bold uppercase text-[10px] tracking-[0.2em] mb-6">Maison</h6>
             <ul className="space-y-4 text-sm text-on-surface-variant">
-              <li><a className="hover:text-secondary transition-colors font-medium" href="#">Collections</a></li>
-              <li><a className="hover:text-secondary transition-colors font-medium" href="#">Philosophy</a></li>
-              <li><a className="hover:text-secondary transition-colors font-medium" href="#">Journal</a></li>
-              <li><a className="hover:text-secondary transition-colors font-medium" href="#">Careers</a></li>
+              <li><a className="hover:text-secondary transition-colors font-medium" href="#" onClick={handleComingSoon}>Collections</a></li>
+              <li><a className="hover:text-secondary transition-colors font-medium" href="#" onClick={handleComingSoon}>Philosophy</a></li>
+              <li><a className="hover:text-secondary transition-colors font-medium" href="#" onClick={handleComingSoon}>Journal</a></li>
+              <li><a className="hover:text-secondary transition-colors font-medium" href="#" onClick={handleComingSoon}>Careers</a></li>
             </ul>
           </div>
           <div>
             <h6 className="font-bold uppercase text-[10px] tracking-[0.2em] mb-6">Support</h6>
             <ul className="space-y-4 text-sm text-on-surface-variant">
-              <li><a className="hover:text-secondary transition-colors font-medium" href="#">Privacy Policy</a></li>
-              <li><a className="hover:text-secondary transition-colors font-medium" href="#">Terms of Service</a></li>
-              <li><a className="hover:text-secondary transition-colors font-medium" href="#">Membership</a></li>
-              <li><a className="hover:text-secondary transition-colors font-medium" href="#">Contact Us</a></li>
+              <li><a className="hover:text-secondary transition-colors font-medium" href="#" onClick={handleComingSoon}>Privacy Policy</a></li>
+              <li><a className="hover:text-secondary transition-colors font-medium" href="#" onClick={handleComingSoon}>Terms of Service</a></li>
+              <li><a className="hover:text-secondary transition-colors font-medium" href="#" onClick={handleComingSoon}>Membership</a></li>
+              <li><a className="hover:text-secondary transition-colors font-medium" href="#" onClick={handleComingSoon}>Contact Us</a></li>
             </ul>
           </div>
         </div>
