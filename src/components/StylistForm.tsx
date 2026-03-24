@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Camera, ArrowLeft, Sparkles, Check, Plus, UploadCloud, Info, Share2, Download, ChevronLeft, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Sparkles, Check, Plus, UploadCloud, Info, Share2, Download, ChevronLeft, ChevronRight, CheckCircle2 } from 'lucide-react';
 
 const StylistForm: React.FC = () => {
   const [step, setStep] = useState(1);
